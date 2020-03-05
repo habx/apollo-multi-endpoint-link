@@ -1,5 +1,11 @@
 ## Apollo link which add an api directive to fetch data from multi endpoints
 
+
+### Install
+```bash
+   npm i @habx/apollo-multi-endpoint-link
+```
+
 ### Setup
 ```typescript
   new ApolloClient({

@@ -1,6 +1,6 @@
-### Apollo link which add an api directive to fetch data from multi endpoints
+## Apollo link which add an api directive to fetch data from multi endpoints
 
-#### Setup
+### Setup
 ```typescript
   new ApolloClient({
     link: new MultiAPILink({
@@ -10,7 +10,7 @@
   })
 ```
 
-#### Queries
+### Queries
 ```graphql
 const projectOptionListQuery = gql`
   query projectList @api(name: projects) {

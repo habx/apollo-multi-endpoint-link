@@ -1,6 +1,6 @@
 {
   "name": "@habx/apollo-multi-endpoint-link",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Apollo link which add an api directive to fetch data from multi endpoints",
   "main": "./dist/index.cjs.js",
   "module": "./dist/esm/index.js",

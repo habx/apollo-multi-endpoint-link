@@ -22,7 +22,6 @@
 
 ### Queries
 ```graphql
-const projectOptionListQuery = gql`
   query projectList @api(name: projects) {
     projects {
       nodes {

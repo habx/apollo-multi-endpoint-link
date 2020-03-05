@@ -3,10 +3,14 @@
 ### Setup
 ```typescript
   new ApolloClient({
-    link: new MultiAPILink({
-      housings: 'https://housings.api/graphql',
-      projects: 'https://projects.api/graphql'
-    })
+    link: ApolloLink.from([
+      new MultiAPILink({
+          housings: 'https://housings.api/graphql',
+          projects: 'https://projects.api/graphql',
+          ...
+        }),
+      new HttpLink({ ... }),
+    ])
   })
 ```
 

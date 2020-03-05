@@ -1,0 +1,54 @@
+{
+  "name": "@habx/tslib-template",
+  "version": "0.0.1",
+  "description": "Typescript library template",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/typings/index.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "bili",
+    "build:watch": "npm run clean && tsc --watch",
+    "generate:snapshots": "node ./scripts/generateSnapshot.js",
+    "lint": "eslint \"src/**\"",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "type:coverage": "tscov"
+  },
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/habx/lib-template.git"
+  },
+  "author": "HABX Front End Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/habx/lib-template/issues"
+  },
+  "homepage": "https://github.com/habx/lib-template#readme",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@habx/eslint-config-client": "^2.8.0",
+    "bili": "^4.7.4",
+    "husky": "^4.2.3",
+    "lint-staged": "^10.0.1",
+    "rimraf": "^3.0.0",
+    "rollup-plugin-typescript2": "^0.26.0",
+    "typescript": "^3.8.3"
+  }
+}

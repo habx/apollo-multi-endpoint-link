@@ -1,0 +1,43 @@
+# Environment Configuration
+.env
+
+# Build output folders
+lib/
+dist/
+
+# Logs
+logs
+*.log
+.cache
+.rpt2_cache
+
+# Coverage directory used by tools like istanbul
+coverage
+
+# node-waf configuration
+.lock-wscript
+
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git-
+node_modules
+
+# Debug log from npm
+npm-debug.log
+
+# IntelliJ IDE ignore
+.idea
+
+# Visual Studio Code
+.vscode
+.history
+
+# flow-typed Lib Defs
+flow-typed/
+
+# Flow Coverage Report
+flow-coverage/
+
+# OSX Files
+.DS_Store
+
+.storybook-static/

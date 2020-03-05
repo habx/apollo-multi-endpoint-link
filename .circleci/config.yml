@@ -1,0 +1,119 @@
+version: 2.1
+
+workflows:
+  deploy-to-kubernetes:
+    jobs:
+      - fetch-node-modules:
+          context: default_env_vars
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: gh-pages
+      - lint:
+          context: default_env_vars
+          requires:
+            - fetch-node-modules
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: gh-pages
+      - build:
+          context: default_env_vars
+          requires:
+            - lint
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: gh-pages
+      - test:
+          context: default_env_vars
+          requires:
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: gh-pages
+      - publish-on-tag:
+          context: default_env_vars
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+jobs:
+  fetch-node-modules:
+    docker:
+      - image: habx/node-base:9-alpine-npm6
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore node modules cache
+          key: node_modules-{{ checksum "package-lock.json" }}
+      - run:
+          command: |
+            npm install
+      - save_cache:
+          name: Save node modules cache
+          key: node_modules-{{ checksum "package-lock.json" }}
+          paths:
+            - node_modules
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - project
+
+  lint:
+    docker:
+      - image: habx/node-base:9-alpine-npm6
+    steps:
+      - attach_workspace:
+          at: /root/
+      - run:
+          command: |
+            npm run lint
+
+  build:
+    docker:
+      - image: habx/node-base:9-alpine-npm6
+    steps:
+      - attach_workspace:
+          at: /root/
+      - run:
+          command: |
+            npm run build
+          environment:
+            NODE_ENV: production
+      - persist_to_workspace:
+          root: /root
+          paths:
+            - project
+
+  test:
+    docker:
+      - image: habx/node-base:9-alpine-npm6
+    steps:
+      - attach_workspace:
+          at: /root/
+      - run:
+          command: |
+            npm run test
+          environment:
+            NODE_ENV: test
+
+  publish-on-tag:
+    docker:
+      - image: habx/node-base:9-alpine-npm6
+    steps:
+      - attach_workspace:
+          at: /root/
+      - run:
+          command: |
+            NPM_TOKEN=${NPM_TOKEN_RW} npm publish
+

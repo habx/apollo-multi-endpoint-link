@@ -16,10 +16,10 @@ class MultiAPILink extends ApolloLink {
     }
 
     const apiName: string = ((operation.query.definitions.find(
-      definition => definition.kind === 'OperationDefinition'
+      (definition) => definition.kind === 'OperationDefinition'
     ) as OperationDefinitionNode)?.directives
-      ?.find(directive => directive.name?.value === 'api')
-      ?.arguments?.find(argument => argument.name?.value === 'name')
+      ?.find((directive) => directive.name?.value === 'api')
+      ?.arguments?.find((argument) => argument.name?.value === 'name')
       ?.value as StringValueNode)?.value
 
     const query = removeDirectivesFromDocument(

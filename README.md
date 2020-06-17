@@ -11,15 +11,31 @@
   new ApolloClient({
     link: ApolloLink.from([
       new MultiAPILink({
-          housings: 'https://housings.api/graphql',
-          projects: 'https://projects.api/graphql',
-          ...
+          endpoints: {
+              housings: 'https://housings.api',
+              projects: 'https://projects.api',
+              ...
+          },
+          createHttpLink: () => new HttpLink({ ... }),
         }),
-      new HttpLink({ ... }),
     ])
   })
 ```
 
+##### API
+```typescript
+  new MultiAPILink(config, request)
+```
+
+###### config
+
+| Parameter      | Description                                                                                                 | Default        | Required |
+|----------------|-------------------------------------------------------------------------------------------------------------|----------------|----------|
+| endpoints      | Dictionary of endpoints                                                                                     |                | Yes      |
+| createHttpLink | Function to generate http link like [apollo-link-http](https://www.apollographql.com/docs/link/links/http/) |                | Yes      |
+| createWsLink   | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)        |                | No       |
+| wsSuffix       | Suffix added to endpoint for subscriptions queries                                                          | /subscriptions | No       |
+| httpSuffix     | Suffix added to endpoint for http queries                                                                   | /graphql       | No       |
 ### Queries
 ```graphql
   query projectList @api(name: projects) {

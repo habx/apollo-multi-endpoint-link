@@ -1,18 +1,35 @@
 import { ApolloLink, NextLink, Operation, RequestHandler } from 'apollo-link'
-import { hasDirectives, removeDirectivesFromDocument } from 'apollo-utilities'
+import {
+  getMainDefinition,
+  hasDirectives,
+  removeDirectivesFromDocument,
+} from 'apollo-utilities'
 import { OperationDefinitionNode, StringValueNode } from 'graphql'
 
-class MultiAPILink extends ApolloLink {
+type Config = {
   endpoints: Record<string, string>
+  createHttpLink: () => ApolloLink
+  createWsLink?: (endpoint: string) => ApolloLink
+  wsSuffix?: string
+  httpSuffix?: string
+}
 
-  constructor(endpoints: Record<string, string>, request?: RequestHandler) {
+class MultiAPILink extends ApolloLink {
+  httpLink: ApolloLink
+  wsLinks: Record<string, ApolloLink>
+
+  config: Config
+
+  constructor(config: Config, request?: RequestHandler) {
     super(request)
-    this.endpoints = endpoints
+    this.config = config
+    this.httpLink = config.createHttpLink()
+    this.wsLinks = {}
   }
 
-  public request(operation: Operation, nextLink: NextLink) {
+  public request(operation: Operation, forward: NextLink) {
     if (!hasDirectives(['api'], operation.query)) {
-      nextLink(operation)
+      return forward(operation)
     }
 
     const apiName: string = ((operation.query.definitions.find(
@@ -32,15 +49,38 @@ class MultiAPILink extends ApolloLink {
 
     operation.query = query
 
-    if (this.endpoints[apiName]) {
+    if (this.config.endpoints[apiName]) {
       operation.setContext({
-        uri: `${this.endpoints[apiName]}/graphql`,
+        uri: `${this.config.endpoints[apiName]}${
+          this.config.httpSuffix ?? '/graphql'
+        }`,
       })
     } else if (process.env.NODE_ENV === 'dev') {
       throw new Error(`${apiName} is not defined in endpoints definitions`)
     }
 
-    return nextLink(operation)
+    const definition = getMainDefinition(operation.query)
+    if (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    ) {
+      if (!this.config.createWsLink) {
+        throw new Error(
+          `You tried to call a subscription without configuring "createWsLink" function:${operation.query}`
+        )
+      }
+      if (!this.wsLinks[apiName]) {
+        const endpoint = this.config.endpoints[apiName]
+        const wsEndpoint = endpoint.startsWith('/')
+          ? `${window.location.origin}${endpoint}`.replace('http', 'ws')
+          : endpoint.replace('http', 'ws')
+        this.wsLinks[apiName] = this.config.createWsLink(
+          `${wsEndpoint}${this.config.wsSuffix ?? '/subscriptions'}`
+        )
+      }
+      return this.wsLinks[apiName].request(operation, forward)
+    }
+    return this.httpLink.request(operation, forward)
   }
 }
 

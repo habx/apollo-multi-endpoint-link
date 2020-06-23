@@ -1,5 +1,10 @@
 ## Apollo link which add an api directive to fetch data from multi endpoints
 
+[![CircleCI](https://img.shields.io/circleci/build/github/habx/apollo-multi-endpoint-link)](https://app.circleci.com/pipelines/github/habx/apollo-multi-endpoint-link)
+[![Version](https://img.shields.io/npm/v/@habx/apollo-multi-endpoint-link)](https://www.npmjs.com/package/@habx/apollo-multi-endpoint-link)
+[![Size](https://img.shields.io/bundlephobia/min/@habx/apollo-multi-endpoint-link)](https://bundlephobia.com/result?p=@habx/apollo-multi-endpoint-link)
+[![License](https://img.shields.io/github/license/habx/apollo-multi-endpoint-link)](/LICENSE)
+
 
 ### Install
 ```bash

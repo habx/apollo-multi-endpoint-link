@@ -39,7 +39,7 @@
 | endpoints      | Dictionary of endpoints                                                                                     |                | Yes      |
 | createHttpLink | Function to generate http link like [apollo-link-http](https://www.apollographql.com/docs/link/links/http/) |                | Yes      |
 | createWsLink   | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)        |                | No       |
-| wsSuffix       | Suffix added to endpoint for subscriptions queries                                                          | /subscriptions | No       |
+| wsSuffix       | Suffix added to endpoint for subscriptions queries                                                          | /graphql/subscriptions | No       |
 | httpSuffix     | Suffix added to endpoint for http queries                                                                   | /graphql       | No       |
 ### Queries
 ```graphql

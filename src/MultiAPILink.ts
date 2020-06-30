@@ -75,7 +75,7 @@ class MultiAPILink extends ApolloLink {
           ? `${window.location.origin}${endpoint}`.replace('http', 'ws')
           : endpoint.replace('http', 'ws')
         this.wsLinks[apiName] = this.config.createWsLink(
-          `${wsEndpoint}${this.config.wsSuffix ?? '/subscriptions'}`
+          `${wsEndpoint}${this.config.wsSuffix ?? '/graphql/subscriptions'}`
         )
       }
       return this.wsLinks[apiName].request(operation, forward)

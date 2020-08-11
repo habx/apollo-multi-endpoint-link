@@ -1,9 +1,9 @@
-import { ApolloLink, NextLink, Operation, RequestHandler } from 'apollo-link'
+import { ApolloLink, NextLink, Operation, RequestHandler } from '@apollo/client'
 import {
   getMainDefinition,
   hasDirectives,
   removeDirectivesFromDocument,
-} from 'apollo-utilities'
+} from '@apollo/client/utilities'
 import { OperationDefinitionNode, StringValueNode } from 'graphql'
 
 type Config = {

@@ -41,7 +41,7 @@
 | createWsLink   | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)        |                | No       |
 | wsSuffix       | Suffix added to endpoint for subscriptions queries                                                          | /graphql/subscriptions | No       |
 | httpSuffix     | Suffix added to endpoint for http queries                                                                   | /graphql       | No       |
-| getContext     | Callback function called to set custom [context](](https://www.apollographql.com/docs/link/links/http/#context) like headers  |        | No       |
+| getContext     | Callback function called to set custom [context](https://www.apollographql.com/docs/link/links/http/#context) like headers  |        | No       |
 
 ### Queries
 ```graphql

@@ -41,6 +41,8 @@
 | createWsLink   | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)        |                | No       |
 | wsSuffix       | Suffix added to endpoint for subscriptions queries                                                          | /graphql/subscriptions | No       |
 | httpSuffix     | Suffix added to endpoint for http queries                                                                   | /graphql       | No       |
+| getContext     | Callback function called to set custom context like headers                                                                   |        | No       |
+
 ### Queries
 ```graphql
   query projectList @api(name: projects) {
@@ -52,5 +54,26 @@
     }
   }
 ````
+
+#### Setting custom context
+
+Sometimes you might need to set custom (apollo link context)[https://www.apollographql.com/docs/link/links/http/#context] like `headers` for authentication purpose.
+This link allows it by doing as following.
+
+```typescript
+new MultiAPILink({
+    getContext: (endpoint) => {
+      if (endpoint === 'yourendpoint-with-auth') {
+        return ({
+          headers: {
+            'Authorization': 'xxxx',
+          }
+        })
+      }
+      return {}
+    },
+    ...
+})
+```
 
 We wrote [an article](https://www.habx.com/tech/micro-graphql-schema) about how we did this link if you want more details

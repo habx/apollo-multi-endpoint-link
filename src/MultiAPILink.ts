@@ -12,6 +12,10 @@ type Config = {
   createWsLink?: (endpoint: string) => ApolloLink
   wsSuffix?: string
   httpSuffix?: string
+  getContext?: (
+    endpoints: string,
+    getCurrentContext: () => Record<string, any>
+  ) => Record<string, any>
 }
 
 class MultiAPILink extends ApolloLink {
@@ -48,6 +52,12 @@ class MultiAPILink extends ApolloLink {
     }
 
     operation.query = query
+
+    if (this.config.getContext) {
+      operation.setContext(
+        this.config.getContext(apiName, operation.getContext)
+      )
+    }
 
     if (this.config.endpoints[apiName]) {
       operation.setContext({

@@ -31,9 +31,9 @@ class MultiAPILink extends ApolloLink {
     this.wsLinks = {}
   }
 
-  public request(operation: Operation, forward: NextLink) {
+  public request(operation: Operation, forward?: NextLink) {
     if (!hasDirectives(['api'], operation.query)) {
-      return forward(operation)
+      return forward?.(operation) ?? null
     }
 
     const apiName: string = ((operation.query.definitions.find(

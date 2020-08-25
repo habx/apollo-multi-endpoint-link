@@ -9,6 +9,10 @@
 [![License](https://img.shields.io/github/license/habx/apollo-multi-endpoint-link)](/LICENSE)
 
 
+### Why ?
+
+We wrote [an article](https://www.habx.com/tech/micro-graphql-schema) about why and how we did this link if you want more details.
+
 
 ### Install
 ```bash
@@ -79,5 +83,3 @@ new MultiAPILink({
     ...
 })
 ```
-
-We wrote [an article](https://www.habx.com/tech/micro-graphql-schema) about how we did this link if you want more details

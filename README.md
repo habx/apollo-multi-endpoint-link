@@ -21,18 +21,20 @@ We wrote [an article](https://www.habx.com/tech/micro-graphql-schema) about why 
 
 ### Setup
 ```typescript
-  new ApolloClient({
-    link: ApolloLink.from([
-      new MultiAPILink({
-          endpoints: {
-              housings: 'https://housings.api',
-              projects: 'https://projects.api',
-              ...
-          },
-          createHttpLink: () => new HttpLink({ ... }),
-        }),
-    ])
-  })
+import { createHttpLink } from "apollo-link-http";
+
+new ApolloClient({
+ link: ApolloLink.from([
+   new MultiAPILink({
+       endpoints: {
+           housings: 'https://housings.api',
+           projects: 'https://projects.api',
+           ...
+       },
+       createHttpLink: () => createHttpLink(),
+     }),
+ ])
+})
 ```
 
 ##### API

@@ -15,6 +15,9 @@ alias:
   - &filters_ignore_branches
     branches:
       ignore: /.*/
+  - &filters_ignore_tags
+    tags:
+      ignore: /.*/
 # - Step - #
   - &preconfig-github-pkg
     run:

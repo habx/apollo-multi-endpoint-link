@@ -127,11 +127,9 @@ workflows:
   build:
     jobs:
       - build:
-          context: default_env_vars
           filters:
             <<: *filters_allow_tags
       - lint:
-          context: default_env_vars
           filters:
             <<: *filters_allow_tags
       - npmjs-publish:

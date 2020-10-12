@@ -6,7 +6,7 @@ alias:
 # https://circleci.com/docs/2.0/circleci-images/#nodejs
   - &docker_node14_configuration
     docker:
-      - image: circleci/node:14.0.0
+      - image: circleci/node:14.13.1
         user: root
 # - Jobs filters - #
   - &filters_allow_tags

@@ -1,4 +1,9 @@
-import { ApolloLink, NextLink, Operation, RequestHandler } from '@apollo/client'
+import {
+  ApolloLink,
+  NextLink,
+  Operation,
+  RequestHandler,
+} from '@apollo/client/core'
 import {
   getMainDefinition,
   hasDirectives,

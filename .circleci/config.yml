@@ -23,7 +23,7 @@ alias:
     run:
       name: Preconfigure environment ~/.npmrc
       command: |
-        echo "@${GITHUB_PKG_NPM_ORG}:registry=https://npm.pkg.github.com/" > ~/.npmrc
+        echo "@habx:registry=https://npm.pkg.github.com/" > ~/.npmrc
         echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
   - &preconfig-npmjs
     run:

@@ -98,7 +98,7 @@ jobs:
           at: ~/project
       - *preconfig-github-pkg
       - *install_node_modules_with_cache
-      - run: rm ~/.npmjs || echo "~/.npmjs not found"
+      - run: rm .npmrc || echo ".npmrc not found"
       - run: npm publish
 
   npmjs-publish:

@@ -1,0 +1,5 @@
+# See https://developer.github.com/v3/repos/#edit for all available settings.
+repository:
+  has_issues: true
+  has_wiki: false
+  has_projects: false

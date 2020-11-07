@@ -1,0 +1,94 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "masterIssue": true,
+  "rangeStrategy": "bump",
+  "prConcurrentLimit": 3,
+  "prHourlyLimit": 5,
+  "enabledManagers": [
+    "npm"
+  ],
+  "packageRules": [
+    {
+      "updateTypes": [
+        "minor",
+        "patch"
+      ],
+      "depTypeList": [
+        "devDependencies"
+      ],
+      "automerge": true,
+      "labels": [
+        "habx-automerge"
+      ]
+    },
+    {
+      "updateTypes": [
+        "patch"
+      ],
+      "depTypeList": [
+        "dependencies",
+        "peerDependencies"
+      ],
+      "automerge": true,
+      "labels": [
+        "habx-automerge"
+      ]
+    },
+    {
+      "packageNames": [
+        "three"
+      ],
+      "automerge": false,
+      "stabilityDays": 7
+    },
+    {
+      "packagePatterns": [
+        "^@habx/"
+      ],
+      "updateTypes": [
+        "minor",
+        "patch"
+      ],
+      "prPriority": 5,
+      "automerge": true,
+      "labels": [
+        "habx-automerge"
+      ]
+    },
+    {
+      "packageNames": [
+        "lodash",
+        "typescript",
+        "lint-staged"
+      ],
+      "updateTypes": [
+        "major",
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "prPriority": -5,
+      "labels": [
+        "habx-automerge"
+      ]
+    },
+    {
+      "packagePatterns": [
+        "^@sentry/",
+        "^@types/"
+      ],
+      "updateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "prPriority": -10,
+      "labels": [
+        "habx-automerge"
+      ]
+    }
+  ]
+}

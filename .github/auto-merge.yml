@@ -2,6 +2,7 @@
 
 updateBranch: true
 deleteBranchAfterMerge: true
+reportStatus: true
 maxRequestedChanges:
   NONE: 0
 blockingLabels:

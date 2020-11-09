@@ -10,6 +10,18 @@
   "enabledManagers": [
     "npm"
   ],
+  "timezone": "Europe/Paris",
+  "schedule": [
+    "after 10pm and before 6:00am"
+  ],
+  "vulnerabilityAlerts": {
+    "labels": [
+      "security"
+    ],
+    "schedule": [
+      "at any time"
+    ]
+  },
   "packageRules": [
     {
       "updateTypes": [
@@ -56,6 +68,9 @@
       "automerge": true,
       "labels": [
         "habx-automerge"
+      ],
+      "schedule": [
+        "at any time"
       ]
     },
     {

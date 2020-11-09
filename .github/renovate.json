@@ -20,7 +20,8 @@
     ],
     "schedule": [
       "at any time"
-    ]
+    ],
+    "prPriority": 10
   },
   "packageRules": [
     {

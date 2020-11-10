@@ -5,8 +5,8 @@
   ],
   "masterIssue": true,
   "rangeStrategy": "bump",
-  "prConcurrentLimit": 3,
-  "prHourlyLimit": 5,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 10,
   "enabledManagers": [
     "npm"
   ],

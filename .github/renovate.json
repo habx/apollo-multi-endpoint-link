@@ -12,7 +12,7 @@
   ],
   "timezone": "Europe/Paris",
   "schedule": [
-    "after 10pm and before 6:00am"
+    "after 10pm and before 3:00am"
   ],
   "vulnerabilityAlerts": {
     "labels": [
@@ -73,6 +73,13 @@
       "schedule": [
         "at any time"
       ]
+    },
+    {
+      "packageNames": [
+        "@habx/lib-client-housing-2d",
+        "@habx/lib-housing-mosaic"
+      ],
+      "groupName": "mosaic changes"
     },
     {
       "packageNames": [

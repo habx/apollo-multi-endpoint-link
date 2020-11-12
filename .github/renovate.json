@@ -5,6 +5,7 @@
   ],
   "masterIssue": true,
   "rangeStrategy": "bump",
+  "separateMinorPatch": true,
   "prConcurrentLimit": 5,
   "prHourlyLimit": 10,
   "enabledManagers": [

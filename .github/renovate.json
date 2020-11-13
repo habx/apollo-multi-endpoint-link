@@ -52,13 +52,6 @@
       ]
     },
     {
-      "packageNames": [
-        "three"
-      ],
-      "automerge": false,
-      "stabilityDays": 7
-    },
-    {
       "packagePatterns": [
         "^@habx/"
       ],
@@ -81,6 +74,14 @@
         "@habx/lib-housing-mosaic"
       ],
       "groupName": "mosaic changes"
+    },
+    {
+      "packageNames": [
+        "three",
+        "react-scripts"
+      ],
+      "automerge": false,
+      "stabilityDays": 7
     },
     {
       "packageNames": [

@@ -55,17 +55,22 @@
       "packagePatterns": [
         "^@habx/"
       ],
+      "schedule": [
+        "at any time"
+      ],
+      "prPriority": 5
+    },
+    {
+      "packagePatterns": [
+        "^@habx/"
+      ],
       "updateTypes": [
         "minor",
         "patch"
       ],
-      "prPriority": 5,
       "automerge": true,
       "labels": [
         "habx-automerge"
-      ],
-      "schedule": [
-        "at any time"
       ]
     },
     {

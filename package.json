@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@apollo/client": "^3.3.6",
-    "@habx/eslint-config-client": "^5.4.0",
+    "@habx/eslint-config-client": "^5.5.0",
     "bili": "^5.0.5",
     "graphql": "^15.4.0",
     "husky": "^4.3.7",

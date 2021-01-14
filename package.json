@@ -43,10 +43,10 @@
   },
   "dependencies": {},
   "peerDependencies": {
-    "@apollo/client": "^3.3.6"
+    "@apollo/client": "^3.3.7"
   },
   "devDependencies": {
-    "@apollo/client": "^3.3.6",
+    "@apollo/client": "^3.3.7",
     "@habx/eslint-config-client": "^5.5.0",
     "bili": "^5.0.5",
     "graphql": "^15.4.0",

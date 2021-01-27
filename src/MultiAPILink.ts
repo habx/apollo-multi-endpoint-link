@@ -23,6 +23,18 @@ type Config = {
   ) => Record<string, any>
 }
 
+const getDirectiveArgumentValueFromOperation = (
+  operation: Operation,
+  directiveName: string,
+  argumentName: string
+) =>
+  ((operation.query.definitions.find(
+    (definition) => definition.kind === 'OperationDefinition'
+  ) as OperationDefinitionNode)?.directives
+    ?.find((directive) => directive.name?.value === directiveName)
+    ?.arguments?.find((argument) => argument.name?.value === argumentName)
+    ?.value as StringValueNode)?.value
+
 class MultiAPILink extends ApolloLink {
   httpLink: ApolloLink
   wsLinks: Record<string, ApolloLink>
@@ -41,17 +53,31 @@ class MultiAPILink extends ApolloLink {
       return forward?.(operation) ?? null
     }
 
-    const apiName: string = ((operation.query.definitions.find(
-      (definition) => definition.kind === 'OperationDefinition'
-    ) as OperationDefinitionNode)?.directives
-      ?.find((directive) => directive.name?.value === 'api')
-      ?.arguments?.find((argument) => argument.name?.value === 'name')
-      ?.value as StringValueNode)?.value
+    let uri: string = ''
+
+    let apiName: string = getDirectiveArgumentValueFromOperation(
+      operation,
+      'api',
+      'name'
+    )
+
+    if (!apiName) {
+      const contextKey = getDirectiveArgumentValueFromOperation(
+        operation,
+        'api',
+        'contextKey'
+      )
+
+      if (contextKey) {
+        apiName = operation.getContext()[contextKey]
+      }
+    }
 
     const query = removeDirectivesFromDocument(
       [{ name: 'api', remove: true }],
       operation.query
     )
+
     if (!query) {
       throw new Error('Error while removing directive api')
     }
@@ -74,6 +100,12 @@ class MultiAPILink extends ApolloLink {
       throw new Error(`${apiName} is not defined in endpoints definitions`)
     }
 
+    if (uri) {
+      operation.setContext({
+        uri: `${uri}${this.config.httpSuffix ?? '/graphql'}`,
+      })
+    }
+
     const definition = getMainDefinition(operation.query)
     if (
       definition.kind === 'OperationDefinition' &&
@@ -93,8 +125,10 @@ class MultiAPILink extends ApolloLink {
           `${wsEndpoint}${this.config.wsSuffix ?? '/graphql/subscriptions'}`
         )
       }
+
       return this.wsLinks[apiName].request(operation, forward)
     }
+
     return this.httpLink.request(operation, forward)
   }
 }

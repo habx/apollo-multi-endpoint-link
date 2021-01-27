@@ -54,16 +54,39 @@ new ApolloClient({
 | getContext     | Callback function called to set custom [context](https://www.apollographql.com/docs/link/links/http/#context) like headers  |        | No       |
 
 ### Queries
+
+
+#### Query with static api name :
 ```graphql
-  query projectList @api(name: projects) {
+query projectList @api(name: projects) {
     projects {
-      nodes {
-        id
-        name
-      }
+        nodes {
+            id
+            name
+        }
     }
-  }
+}
+```
+
+```ts
+const response = useQuery(myQuery)
+```
+
+#### Query with dynamic api name
+```graphql
+query projectList @api(contextKey: "apiName") {
+    projects {
+        nodes {
+            id
+            name
+        }
+    }
+}
 ````
+
+```ts
+const response = useQuery(myQuery, { context: { apiName: 'projects' }})
+```
 
 #### Setting custom context
 

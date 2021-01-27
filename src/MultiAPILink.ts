@@ -53,8 +53,6 @@ class MultiAPILink extends ApolloLink {
       return forward?.(operation) ?? null
     }
 
-    let uri: string = ''
-
     let apiName: string = getDirectiveArgumentValueFromOperation(
       operation,
       'api',
@@ -98,12 +96,6 @@ class MultiAPILink extends ApolloLink {
       })
     } else if (process.env.NODE_ENV === 'dev') {
       throw new Error(`${apiName} is not defined in endpoints definitions`)
-    }
-
-    if (uri) {
-      operation.setContext({
-        uri: `${uri}${this.config.httpSuffix ?? '/graphql'}`,
-      })
     }
 
     const definition = getMainDefinition(operation.query)

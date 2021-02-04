@@ -3,6 +3,11 @@
   "extends": [
     "config:base"
   ],
+  "force": {
+    "constraints": {
+      "node": "^15"
+    }
+  },
   "masterIssue": true,
   "rangeStrategy": "bump",
   "separateMinorPatch": true,

@@ -54,7 +54,7 @@
     "lint-staged": "^10.5.4",
     "rimraf": "^3.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
-    "typescript": "^4.1.5"
+    "typescript": "^4.2.2"
   },
   "publishConfig": "https://npm.pkg.github.com/"
 }

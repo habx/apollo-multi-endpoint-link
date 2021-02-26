@@ -3,11 +3,11 @@ version: 2.1
 # --- Anchor alias ---- #
 # - Docker configuration - #
 alias:
-# https://circleci.com/docs/2.0/circleci-images/#nodejs
-  - &docker_node14_configuration
-    docker:
-      - image: circleci/node:14.13.1
-        user: root
+  - &node_executor
+    executor:
+      name: node/default
+      # See https://circleci.com/developer/orbs/orb/circleci/node for available tags.
+      tag: "14.15"
 # - Jobs filters - #
   - &filters_allow_tags
     tags:
@@ -31,35 +31,21 @@ alias:
       command: |
         echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
 # - Node modules - #
-  - &install_node_modules_with_cache
-    node/with-cache:
-        dir: node_modules
-        cache-version: dev{{ .Environment.CACHE_VERSION }}
-        steps:
-          - run:
-              name: Install node module
-              command: npm install
-  - &install_node_modules_with_cache_production
-    node/with-cache:
-      dir: node_modules
-      cache-version: prod{{ .Environment.CACHE_VERSION }}
-      steps:
-        - run:
-            name: Install node module production
-            command: npm install --production
-  - &fetch_node_modules_with_cache_production
-    node/with-cache:
-      dir: node_modules
-      cache-version: prod{{ .Environment.CACHE_VERSION }}
-      steps:
-        - run: echo
+  - &install_npm
+    node/install-npm:
+      version: "7"
+  - &install_dependencies
+    node/install-packages:
+      cache-version: "{{ .Environment.CACHE_VERSION }}"
+      include-branch-in-cache-key: false
+      override-ci-command: npm ci --no-audit
 jobs:
   build:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
-      - *install_node_modules_with_cache_production
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: export NODE_ENV=production; npm run build
       - persist_to_workspace:
           root: ~/project
@@ -67,68 +53,74 @@ jobs:
             - dist
 
   storybook-build:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
-      - *install_node_modules_with_cache
       - attach_workspace:
           at: ~/project
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: npm run storybook:build
 
   lint:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: npm run lint
 
   tests:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: npm run test
 
   github-pkg-publish:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
       - attach_workspace:
           at: ~/project
       - *preconfig-github-pkg
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: rm .npmrc || echo ".npmrc not found"
       - run: npm publish
 
   npmjs-publish:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
       - attach_workspace:
           at: ~/project
       - *preconfig-npmjs
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: jq -M 'del(.publishConfig)' package.json > _package.json; mv _package.json package.json
       - run: npm publish
 
   storybook-publish:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
       - attach_workspace:
           at: ~/project
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run: npm run storybook:deploy
 
   tsdoc-publish:
-    <<: *docker_node14_configuration
+    <<: *node_executor
     steps:
       - checkout
       - attach_workspace:
           at: ~/project
       - *preconfig-npmjs
-      - *install_node_modules_with_cache
+      - *install_npm
+      - *install_dependencies
       - run:
           name: Install and configure dependencies
           command: |
@@ -138,7 +130,7 @@ jobs:
           command: npm run build:documentation && gh-pages --dist docs --repo https://${GITHUB_TOKEN}@github.com/${CIRCLE_REPOSITORY_URL#"git@github.com:"} --silent --message "[SKIP CI] CircleCI build ${CIRCLE_BUILD_NUM} pushed to Github Pages"
 
 orbs:
-  node: circleci/node@1.0.1
+  node: circleci/node@4.1.0
 # --- END --- #
 # --------------------------------------------------- #
 # -------------- DEFINE YOUR WORKFLOW --------------- #

@@ -33,7 +33,7 @@ alias:
 # - Node modules - #
   - &install_npm
     node/install-npm:
-      version: "7"
+      version: "7.6.0"
   - &install_dependencies
     node/install-packages:
       cache-version: "{{ .Environment.CACHE_VERSION }}"

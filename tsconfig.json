@@ -1,28 +1,9 @@
 {
+  "extends": "@habx/config-ci-front/typescript/library.json",
   "compilerOptions": {
-    "jsx": "react",
-    "outDir": "./dist/esm",
     "declarationDir": "./dist/typings",
-    "baseUrl": "typings",
-    "target": "ES5",
-    "module": "ES2015",
-    "moduleResolution": "Node",
-    "lib": ["ESNext", "DOM"],
-    "typeRoots": ["./node_modules/@types", "./typings"],
-    "strict": true,
-    "removeComments": true,
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-    "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "skipLibCheck": true,
-    "resolveJsonModule": true
+    "outDir": "./dist/esm"
   },
-  "include": ["./src/**/*"],
+  "include": ["./src"],
   "exclude": ["./src/**/*.spec.ts"],
-  "typedocOptions": {
-    "mode": "file",
-    "out": "docs"
-  }
 }

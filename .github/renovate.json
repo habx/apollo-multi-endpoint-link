@@ -91,20 +91,6 @@
     },
     {
       "packageNames": [
-        "three",
-        "react-scripts"
-      ],
-      "automerge": false,
-      "stabilityDays": 7
-    },
-    {
-      "packageNames": [
-        "final-form"
-      ],
-      "automerge": false
-    },
-    {
-      "packageNames": [
         "lodash",
         "typescript",
         "lint-staged"
@@ -136,6 +122,22 @@
         "habx-automerge",
         "dependencies"
       ]
+    },
+    {
+      "packageNames": [
+        "three",
+        "react-scripts"
+      ],
+      "automerge": false,
+      "stabilityDays": 7,
+      "labels": []
+    },
+    {
+      "packageNames": [
+        "final-form"
+      ],
+      "automerge": false,
+      "labels": []
     }
   ]
 }

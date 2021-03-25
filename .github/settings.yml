@@ -1,4 +1,5 @@
-# See https://developer.github.com/v3/repos/#edit for all available settings.
+# These settings are synced to GitHub by https://probot.github.io/apps/settings/
+# See https://github.com/apps/settings
 repository:
   has_issues: true
   has_wiki: false

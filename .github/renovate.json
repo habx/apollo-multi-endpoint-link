@@ -30,6 +30,9 @@
     ],
     "prPriority": 10
   },
+  "labels": [
+    "dependencies"
+  ],
   "packageRules": [
     {
       "updateTypes": [

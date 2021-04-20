@@ -82,6 +82,7 @@
       "automerge": true,
       "labels": [
         "habx-automerge",
+        "automerge",
         "dependencies"
       ]
     },

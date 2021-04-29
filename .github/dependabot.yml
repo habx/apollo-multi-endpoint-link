@@ -1,0 +1,25 @@
+version: 2
+registries:
+  npm-registry-registry-npmjs-org:
+    type: npm-registry
+    url: https://registry.npmjs.org
+    token: "${{secrets.NPM_REGISTRY_REGISTRY_NPMJS_ORG_TOKEN}}"
+  npm-registry-npm-pkg-github-com:
+    type: npm-registry
+    url: https://npm.pkg.github.com
+    username: "${{secrets.NPM_REGISTRY_NPM_PKG_GITHUB_COM_USERNAME}}"
+    password: "${{secrets.NPM_REGISTRY_NPM_PKG_GITHUB_COM_PASSWORD}}"
+
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "06:00"
+    timezone: Europe/Paris
+  open-pull-requests-limit: 99
+  allow:
+  - dependency-name: doesntexist
+  registries:
+  - npm-registry-registry-npmjs-org
+  - npm-registry-npm-pkg-github-com

@@ -42,10 +42,10 @@
     ]
   },
   "peerDependencies": {
-    "@apollo/client": "^3.3.16"
+    "@apollo/client": "^3.3.17"
   },
   "devDependencies": {
-    "@apollo/client": "^3.3.16",
+    "@apollo/client": "^3.3.17",
     "@habx/config-ci-front": "^0.9.0",
     "@habx/eslint-config-client": "^6.0.0",
     "bili": "^5.0.5",

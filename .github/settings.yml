@@ -9,6 +9,10 @@ labels:
     description: Automatically merge this PR (but doesn't perform update)
     color: ff66cc
     oldname: habx-automerge
+  - name: autoupdate
+    description: Automatically update this PR
+    color: ff66cc
+    oldname: habx-autoupdate
   - name: autorelease
     description: Automatically create a release after merge
     color: ff66cc

@@ -4,6 +4,24 @@ repository:
   has_issues: true
   has_wiki: false
   has_projects: false
+labels:
+  - name: automerge
+    description: Automatically merge this PR (but doesn't perform update)
+    color: ff66cc
+    oldname: habx-automerge
+  - name: autorelease
+    description: Automatically create a release after merge
+    color: ff66cc
+    oldname: habx-automerge
+  - name: autorelease-major
+    description: Automatically create a MAJOR release after merge
+    color: ff66cc
+  - name: dependencies
+    description: Update created by dependencies
+    color: 0366d6
+  - name: security
+    description: Pull request related to security
+    color: ee0701
 
 branches:
   - name: dev

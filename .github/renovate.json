@@ -140,7 +140,7 @@
       "packageNames": [
         "final-form"
       ],
-      "automerge-noupdate": false,
+      "automerge": false,
       "labels": []
     }
   ]

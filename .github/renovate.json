@@ -94,6 +94,13 @@
     },
     {
       "packageNames": [
+        "ts-jest",
+        "jest"
+      ],
+      "groupName": "jest"
+    },
+    {
+      "packageNames": [
         "lodash",
         "typescript",
         "lint-staged"

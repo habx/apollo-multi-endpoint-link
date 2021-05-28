@@ -95,9 +95,10 @@
     {
       "packageNames": [
         "ts-jest",
-        "jest"
+        "jest",
+        "@types/jest"
       ],
-      "groupName": "jest"
+      "groupName": "jest changes"
     },
     {
       "packageNames": [

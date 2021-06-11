@@ -11,7 +11,8 @@ blockingTitleRegex: '\bWIP\b'
 rules:
   - minApprovals:
       CONTRIBUTOR: 1
-  - requiredLabels:
-      - habx-automerge
-  # APP-11930: Automatically merging pre-1.0.0 dependencies
-  - requiredBodyRegex: 'because this dependency is pre-1.0.0'
+# Disabling the "habx-automerge" label:
+#  - requiredLabels:
+#      - habx-automerge
+#  # APP-11930: Automatically merging pre-1.0.0 dependencies
+#  - requiredBodyRegex: 'because this dependency is pre-1.0.0'

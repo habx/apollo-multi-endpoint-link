@@ -13,7 +13,10 @@ export const getDirectiveArgumentValueFromOperation = (
     ?.arguments?.find((argument) => argument.name?.value === argumentName)
     ?.value as StringValueNode)?.value
 
-export const addApiNameToTypeName = (data: any, apiName: string): any => {
+export const addApiNameToTypeName = <D extends any | { __typename: string }>(
+  data: D,
+  apiName: string
+): D => {
   if (data == null || typeof data !== 'object') {
     return data
   }
@@ -24,10 +27,10 @@ export const addApiNameToTypeName = (data: any, apiName: string): any => {
   const newData = Object.entries(data).reduce(
     (ctx, [itemKey, item]) => ({
       ...ctx,
-      [itemKey]: addApiNameToTypeName(item as any, apiName),
+      [itemKey]: addApiNameToTypeName(item, apiName),
     }),
     {}
-  )
+  ) as D
 
   if (data.__typename) {
     return {

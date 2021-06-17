@@ -52,6 +52,7 @@ new ApolloClient({
 | wsSuffix       | Suffix added to endpoint for subscriptions queries                                                          | /graphql/subscriptions | No       |
 | httpSuffix     | Suffix added to endpoint for http queries                                                                   | /graphql       | No       |
 | getContext     | Callback function called to set custom [context](https://www.apollographql.com/docs/link/links/http/#context) like headers  |        | No       |
+| addApiInTypeName     | Add name argument passed in `@api` directive to every __typename contained in network data response  |        | No       |
 
 ### Queries
 

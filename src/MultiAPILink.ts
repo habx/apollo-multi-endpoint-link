@@ -65,6 +65,8 @@ const addApiNameToTypeName = (data: any, apiName: string): any => {
 
   return newData
 }
+const isFunction = (fn: any) =>
+  fn && {}.toString.call(fn) === '[object Function]'
 
 class MultiAPILink extends ApolloLink {
   httpLink: ApolloLink
@@ -149,24 +151,18 @@ class MultiAPILink extends ApolloLink {
         )
       }
 
-      if (this.config.addApiInTypeName) {
-        return (
-          this.wsLinks[apiName]
-            .request(operation, forward)
-            ?.map((e) => addApiNameToTypeName(e, apiName)) ?? null
-        )
+      const response = this.wsLinks[apiName].request(operation, forward)
+      if (this.config.addApiInTypeName && isFunction(response?.map)) {
+        return response!.map((e) => addApiNameToTypeName(e, apiName))
       }
-      return this.wsLinks[apiName].request(operation, forward)
+      return response
     }
 
-    if (this.config.addApiInTypeName) {
-      return (
-        this.httpLink
-          .request(operation, forward)
-          ?.map((e) => addApiNameToTypeName(e, apiName)) ?? null
-      )
+    const response = this.httpLink.request(operation, forward)
+    if (this.config.addApiInTypeName && isFunction(response?.map)) {
+      return response!.map((e) => addApiNameToTypeName(e, apiName))
     }
-    return this.httpLink.request(operation, forward)
+    return response
   }
 }
 

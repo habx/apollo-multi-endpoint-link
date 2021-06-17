@@ -94,6 +94,15 @@
     },
     {
       "packageNames": [
+        "@habx/lib-client-housing-3d",
+        "@habx/lib-housing-3d-scene",
+        "three",
+        "@types/three"
+      ],
+      "groupName": "3d changes"
+    },
+    {
+      "packageNames": [
         "ts-jest",
         "jest",
         "@types/jest"

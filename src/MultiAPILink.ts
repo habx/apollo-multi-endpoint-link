@@ -9,7 +9,12 @@ import {
   hasDirectives,
   removeDirectivesFromDocument,
 } from '@apollo/client/utilities'
-import { OperationDefinitionNode, StringValueNode } from 'graphql'
+
+import {
+  addApiNameToTypeName,
+  getDirectiveArgumentValueFromOperation,
+  isFunction,
+} from './utils'
 
 type Config = {
   endpoints: Record<string, string>
@@ -27,46 +32,6 @@ type Config = {
    */
   addApiInTypeName?: boolean
 }
-
-const getDirectiveArgumentValueFromOperation = (
-  operation: Operation,
-  directiveName: string,
-  argumentName: string
-) =>
-  ((operation.query.definitions.find(
-    (definition) => definition.kind === 'OperationDefinition'
-  ) as OperationDefinitionNode)?.directives
-    ?.find((directive) => directive.name?.value === directiveName)
-    ?.arguments?.find((argument) => argument.name?.value === argumentName)
-    ?.value as StringValueNode)?.value
-
-const addApiNameToTypeName = (data: any, apiName: string): any => {
-  if (data == null || typeof data !== 'object') {
-    return data
-  }
-  if (Array.isArray(data)) {
-    return data.map((item) => addApiNameToTypeName(item, apiName))
-  }
-
-  const newData = Object.entries(data).reduce(
-    (ctx, [itemKey, item]) => ({
-      ...ctx,
-      [itemKey]: addApiNameToTypeName(item as any, apiName),
-    }),
-    {}
-  )
-
-  if (data.__typename) {
-    return {
-      ...newData,
-      __typename: `${apiName}:${data.__typename}`,
-    }
-  }
-
-  return newData
-}
-const isFunction = (fn: any) =>
-  fn && {}.toString.call(fn) === '[object Function]'
 
 class MultiAPILink extends ApolloLink {
   httpLink: ApolloLink

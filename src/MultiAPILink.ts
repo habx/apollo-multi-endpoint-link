@@ -33,7 +33,7 @@ type Config = {
   addApiInTypeName?: boolean
 }
 
-class MultiAPILink extends ApolloLink {
+export class MultiAPILink extends ApolloLink {
   httpLink: ApolloLink
   wsLinks: Record<string, ApolloLink>
 
@@ -130,5 +130,3 @@ class MultiAPILink extends ApolloLink {
     return response
   }
 }
-
-export default MultiAPILink

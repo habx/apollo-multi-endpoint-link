@@ -21,6 +21,11 @@ type Config = {
     endpoints: string,
     getCurrentContext: () => Record<string, any>
   ) => Record<string, any>
+  /**
+   * Add apiName passed in `api` directive to every `__typename` contained in network data response
+   * eg: with `@api(name: 'v1')` directive in your query, an initial typename `Project` would become `v1:Project`
+   */
+  addApiInTypeName?: boolean
 }
 
 const getDirectiveArgumentValueFromOperation = (
@@ -34,6 +39,32 @@ const getDirectiveArgumentValueFromOperation = (
     ?.find((directive) => directive.name?.value === directiveName)
     ?.arguments?.find((argument) => argument.name?.value === argumentName)
     ?.value as StringValueNode)?.value
+
+const addApiNameToTypeName = (data: any, apiName: string): any => {
+  if (data == null || typeof data !== 'object') {
+    return data
+  }
+  if (Array.isArray(data)) {
+    return data.map((item) => addApiNameToTypeName(item, apiName))
+  }
+
+  const newData = Object.entries(data).reduce(
+    (ctx, [itemKey, item]) => ({
+      ...ctx,
+      [itemKey]: addApiNameToTypeName(item as any, apiName),
+    }),
+    {}
+  )
+
+  if (data.__typename) {
+    return {
+      ...newData,
+      __typename: `${apiName}:${data.__typename}`,
+    }
+  }
+
+  return newData
+}
 
 class MultiAPILink extends ApolloLink {
   httpLink: ApolloLink
@@ -118,9 +149,23 @@ class MultiAPILink extends ApolloLink {
         )
       }
 
+      if (this.config.addApiInTypeName) {
+        return (
+          this.wsLinks[apiName]
+            .request(operation, forward)
+            ?.map((e) => addApiNameToTypeName(e, apiName)) ?? null
+        )
+      }
       return this.wsLinks[apiName].request(operation, forward)
     }
 
+    if (this.config.addApiInTypeName) {
+      return (
+        this.httpLink
+          .request(operation, forward)
+          ?.map((e) => addApiNameToTypeName(e, apiName)) ?? null
+      )
+    }
     return this.httpLink.request(operation, forward)
   }
 }

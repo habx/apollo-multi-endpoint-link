@@ -94,6 +94,13 @@
     },
     {
       "packageNames": [
+        "typescript",
+        "typedoc"
+      ],
+      "groupName": "typescript changes"
+    },
+    {
+      "packageNames": [
         "@habx/lib-client-housing-3d",
         "@habx/lib-housing-3d-scene",
         "three",

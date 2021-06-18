@@ -12,7 +12,7 @@ import {
 
 import { MultiAPILinkConfig } from './interface'
 import {
-  addApiNameToTypeName,
+  prefixTypenames,
   getDirectiveArgumentValueFromOperation,
   isFunction,
 } from './utils'
@@ -101,15 +101,15 @@ export class MultiAPILink extends ApolloLink {
       }
 
       const response = this.wsLinks[apiName].request(operation, forward)
-      if (this.config.addApiInTypeName && isFunction(response?.map)) {
-        return response!.map((e) => addApiNameToTypeName(e, apiName))
+      if (this.config.prefixTypenames && isFunction(response?.map)) {
+        return response!.map((e) => prefixTypenames(e, apiName))
       }
       return response
     }
 
     const response = this.httpLink.request(operation, forward)
-    if (this.config.addApiInTypeName && isFunction(response?.map)) {
-      return response!.map((e) => addApiNameToTypeName(e, apiName))
+    if (this.config.prefixTypenames && isFunction(response?.map)) {
+      return response!.map((e) => prefixTypenames(e, apiName))
     }
     return response
   }

@@ -46,15 +46,15 @@ new MultiAPILink(config, request);
 
 ###### config
 
-| Parameter        | Description                                                                                                                | Default                | Required |
-| ---------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
-| endpoints        | Dictionary of endpoints                                                                                                    |                        | Yes      |
-| createHttpLink   | Function to generate http link like [apollo-link-http](https://www.apollographql.com/docs/link/links/http/)                |                        | Yes      |
-| createWsLink     | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)                       |                        | No       |
-| wsSuffix         | Suffix added to endpoint for subscriptions queries                                                                         | /graphql/subscriptions | No       |
-| httpSuffix       | Suffix added to endpoint for http queries                                                                                  | /graphql               | No       |
-| getContext       | Callback function called to set custom [context](https://www.apollographql.com/docs/link/links/http/#context) like headers |                        | No       |
-| addApiInTypeName | Add name argument passed in `@api` directive to every \_\_typename contained in network data response                      |                        | No       |
+| Parameter       | Description                                                                                                                | Default                | Required |
+| --------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
+| endpoints       | Dictionary of endpoints                                                                                                    |                        | Yes      |
+| createHttpLink  | Function to generate http link like [apollo-link-http](https://www.apollographql.com/docs/link/links/http/)                |                        | Yes      |
+| createWsLink    | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)                       |                        | No       |
+| wsSuffix        | Suffix added to endpoint for subscriptions queries                                                                         | /graphql/subscriptions | No       |
+| httpSuffix      | Suffix added to endpoint for http queries                                                                                  | /graphql               | No       |
+| getContext      | Callback function called to set custom [context](https://www.apollographql.com/docs/link/links/http/#context) like headers |                        | No       |
+| prefixTypenames | Add name argument passed in `@api` directive to every \_\_typename contained in network data response                      |                        | No       |
 
 ### Queries
 

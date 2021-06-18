@@ -14,5 +14,5 @@ export interface MultiAPILinkConfig {
    * Add apiName passed in `api` directive to every `__typename` contained in network data response
    * eg: with `@api(name: 'v1')` directive in your query, an initial typename `Project` would become `v1:Project`
    */
-  addApiInTypeName?: boolean
+  prefixTypenames?: boolean
 }

@@ -13,18 +13,18 @@ export const getDirectiveArgumentValueFromOperation = (
     ?.arguments?.find((argument) => argument.name?.value === argumentName)
     ?.value as StringValueNode)?.value
 
-export const addApiNameToTypeName = (data: any, apiName: string): any => {
+export const prefixTypenames = (data: any, apiName: string): any => {
   if (data == null || typeof data !== 'object') {
     return data
   }
   if (Array.isArray(data)) {
-    return data.map((item) => addApiNameToTypeName(item, apiName))
+    return data.map((item) => prefixTypenames(item, apiName))
   }
 
   const newData = Object.entries(data).reduce(
     (ctx, [itemKey, item]) => ({
       ...ctx,
-      [itemKey]: addApiNameToTypeName(item, apiName),
+      [itemKey]: prefixTypenames(item, apiName),
     }),
     {}
   )

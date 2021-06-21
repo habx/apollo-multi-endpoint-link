@@ -1,1 +1,2 @@
-export { default as MultiAPILink } from './MultiAPILink'
+export { MultiAPILink } from './MultiAPILink'
+export { MultiAPILinkConfig } from './interface'

@@ -9,39 +9,21 @@ import {
   hasDirectives,
   removeDirectivesFromDocument,
 } from '@apollo/client/utilities'
-import { OperationDefinitionNode, StringValueNode } from 'graphql'
 
-type Config = {
-  endpoints: Record<string, string>
-  createHttpLink: () => ApolloLink
-  createWsLink?: (endpoint: string) => ApolloLink
-  wsSuffix?: string
-  httpSuffix?: string
-  getContext?: (
-    endpoints: string,
-    getCurrentContext: () => Record<string, any>
-  ) => Record<string, any>
-}
+import { MultiAPILinkConfig } from './interface'
+import {
+  prefixTypenames,
+  getDirectiveArgumentValueFromOperation,
+  isFunction,
+} from './utils'
 
-const getDirectiveArgumentValueFromOperation = (
-  operation: Operation,
-  directiveName: string,
-  argumentName: string
-) =>
-  ((operation.query.definitions.find(
-    (definition) => definition.kind === 'OperationDefinition'
-  ) as OperationDefinitionNode)?.directives
-    ?.find((directive) => directive.name?.value === directiveName)
-    ?.arguments?.find((argument) => argument.name?.value === argumentName)
-    ?.value as StringValueNode)?.value
-
-class MultiAPILink extends ApolloLink {
+export class MultiAPILink extends ApolloLink {
   httpLink: ApolloLink
   wsLinks: Record<string, ApolloLink>
 
-  config: Config
+  config: MultiAPILinkConfig
 
-  constructor(config: Config, request?: RequestHandler) {
+  constructor(config: MultiAPILinkConfig, request?: RequestHandler) {
     super(request)
     this.config = config
     this.httpLink = config.createHttpLink()
@@ -118,11 +100,17 @@ class MultiAPILink extends ApolloLink {
         )
       }
 
-      return this.wsLinks[apiName].request(operation, forward)
+      const response = this.wsLinks[apiName].request(operation, forward)
+      if (this.config.prefixTypenames && isFunction(response?.map)) {
+        return response!.map((e) => prefixTypenames(e, apiName))
+      }
+      return response
     }
 
-    return this.httpLink.request(operation, forward)
+    const response = this.httpLink.request(operation, forward)
+    if (this.config.prefixTypenames && isFunction(response?.map)) {
+      return response!.map((e) => prefixTypenames(e, apiName))
+    }
+    return response
   }
 }
-
-export default MultiAPILink

@@ -30,7 +30,7 @@ export interface MultiAPILinkConfig {
    * Callback function to set context like headers according to your endpoint.
    */
   getContext?: (
-    endpoints: string,
+    endpoint: string,
     getCurrentContext: () => Record<string, any>
   ) => Record<string, any>
   /**

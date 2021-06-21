@@ -25,7 +25,7 @@ export interface MultiAPILinkConfig {
   httpSuffix?: string
   /**
    *
-   * @param endpoints
+   * @param endpoint
    * @param getCurrentContext
    * Callback function to set context like headers according to your endpoint.
    */

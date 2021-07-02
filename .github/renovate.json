@@ -33,6 +33,7 @@
   "labels": [
     "dependencies"
   ],
+  "ignoreDeps": ["husky"],
   "packageRules": [
     {
       "updateTypes": [

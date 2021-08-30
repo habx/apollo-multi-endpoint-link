@@ -49,7 +49,7 @@
     "@habx/config-ci-front": "^0.17.0",
     "@habx/eslint-config-client": "^6.3.0",
     "bili": "^5.0.5",
-    "graphql": "^15.5.1",
+    "graphql": "^15.5.2",
     "husky": "^4.3.8",
     "lint-staged": "^11.1.2",
     "rimraf": "^3.0.2",

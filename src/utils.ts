@@ -6,12 +6,16 @@ export const getDirectiveArgumentValueFromOperation = (
   directiveName: string,
   argumentName: string
 ) =>
-  ((operation.query.definitions.find(
-    (definition) => definition.kind === 'OperationDefinition'
-  ) as OperationDefinitionNode)?.directives
-    ?.find((directive) => directive.name?.value === directiveName)
-    ?.arguments?.find((argument) => argument.name?.value === argumentName)
-    ?.value as StringValueNode)?.value
+  (
+    (
+      operation.query.definitions.find(
+        (definition) => definition.kind === 'OperationDefinition'
+      ) as OperationDefinitionNode
+    )?.directives
+      ?.find((directive) => directive.name?.value === directiveName)
+      ?.arguments?.find((argument) => argument.name?.value === argumentName)
+      ?.value as StringValueNode
+  )?.value
 
 export const prefixTypenames = (data: any, apiName: string): any => {
   if (data == null || typeof data !== 'object') {

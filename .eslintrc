@@ -1,3 +1,6 @@
 {
-  "extends": ["@habx/client/typescript"]
+  "extends": ["@habx/client/typescript"],
+  "parserOptions": {
+    "project": "./tsconfig.eslint.json"
+  }
 }

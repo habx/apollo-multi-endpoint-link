@@ -15,8 +15,7 @@
     "generate:snapshots": "node ./scripts/generateSnapshot.js",
     "lint": "eslint \"src/**\"",
     "test": "jest",
-    "test:coverage": "jest --coverage",
-    "type:coverage": "tscov"
+    "test:coverage": "jest --coverage"
   },
   "files": [
     "dist"

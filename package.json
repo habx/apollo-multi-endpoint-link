@@ -47,7 +47,7 @@
     "@apollo/client": "^3.4.13",
     "@habx/config-ci-front": "^0.17.0",
     "@habx/eslint-config-client": "^6.3.0",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^27.0.2",
     "bili": "^5.0.5",
     "graphql": "^15.6.0",
     "husky": "^4.3.8",

@@ -53,7 +53,7 @@
     "husky": "^4.3.8",
     "jest": "^27.2.5",
     "jest-fetch-mock": "^3.0.3",
-    "lint-staged": "^11.2.1",
+    "lint-staged": "^11.2.2",
     "rimraf": "^3.0.2",
     "rollup-plugin-typescript2": "^0.30.0",
     "ts-jest": "^27.0.5",

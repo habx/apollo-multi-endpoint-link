@@ -160,13 +160,6 @@
       "automerge": false,
       "stabilityDays": 7,
       "labels": []
-    },
-    {
-      "packageNames": [
-        "final-form"
-      ],
-      "automerge": false,
-      "labels": []
     }
   ]
 }

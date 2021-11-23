@@ -41,10 +41,10 @@
     ]
   },
   "peerDependencies": {
-    "@apollo/client": "^3.5.4"
+    "@apollo/client": "^3.5.5"
   },
   "devDependencies": {
-    "@apollo/client": "^3.5.4",
+    "@apollo/client": "^3.5.5",
     "@habx/config-ci-front": "^0.18.0",
     "@habx/eslint-config-client": "^6.3.0",
     "@types/jest": "^27.0.3",

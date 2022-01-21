@@ -38,6 +38,9 @@ new ApolloClient({
 })
 ```
 
+NB: Since default value of `httpSuffix` is `/graphql`, endpoints above will be transformed to `https://housings.api/graphql` and `https://projects.api/graphql`.
+If you do not have common suffix, you can pass an empty string as `httpSuffix` to avoid this transformation.
+
 ##### API
 
 ```typescript

@@ -10,20 +10,22 @@ import {
   removeDirectivesFromDocument,
 } from '@apollo/client/utilities'
 
-import { MultiAPILinkConfig } from './interface'
+import { DefaultEndpoints, MultiAPILinkConfig } from './interface'
 import {
   prefixTypenames,
   getDirectiveArgumentValueFromOperation,
   isFunction,
 } from './utils'
 
-export class MultiAPILink extends ApolloLink {
+export class MultiAPILink<
+  Endpoints extends DefaultEndpoints = DefaultEndpoints
+> extends ApolloLink {
   httpLink: ApolloLink
   wsLinks: Record<string, ApolloLink>
 
-  config: MultiAPILinkConfig
+  config: MultiAPILinkConfig<Endpoints>
 
-  constructor(config: MultiAPILinkConfig, request?: RequestHandler) {
+  constructor(config: MultiAPILinkConfig<Endpoints>, request?: RequestHandler) {
     super(request)
     this.config = config
     this.httpLink = config.createHttpLink()
@@ -31,7 +33,10 @@ export class MultiAPILink extends ApolloLink {
   }
 
   public request(operation: Operation, forward?: NextLink) {
-    if (!hasDirectives(['api'], operation.query)) {
+    if (
+      !hasDirectives(['api'], operation.query) &&
+      !this.config.defaultEndpoint
+    ) {
       return forward?.(operation) ?? null
     }
 
@@ -50,6 +55,8 @@ export class MultiAPILink extends ApolloLink {
 
       if (contextKey) {
         apiName = operation.getContext()[contextKey]
+      } else if (!!this.config.defaultEndpoint) {
+        apiName = this.config.defaultEndpoint
       }
     }
 

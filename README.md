@@ -52,6 +52,7 @@ new MultiAPILink(config, request);
 | Parameter       | Description                                                                                                                | Default                | Required |
 | --------------- | -------------------------------------------------------------------------------------------------------------------------- | ---------------------- | -------- |
 | endpoints       | Dictionary of endpoints                                                                                                    |                        | Yes      |
+| defaultEndpoint      | Default endpoint                                                                                                    |                        | No      |
 | createHttpLink  | Function to generate http link like [apollo-link-http](https://www.apollographql.com/docs/link/links/http/)                |                        | Yes      |
 | createWsLink    | Function to generate wsLink like [apollo-link-ws](https://www.apollographql.com/docs/link/links/ws/)                       |                        | No       |
 | wsSuffix        | Suffix added to endpoint for subscriptions queries                                                                         | /graphql/subscriptions | No       |

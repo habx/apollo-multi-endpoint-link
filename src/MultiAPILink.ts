@@ -31,7 +31,10 @@ export class MultiAPILink extends ApolloLink {
   }
 
   public request(operation: Operation, forward?: NextLink) {
-    if (!hasDirectives(['api'], operation.query)) {
+    if (
+      !hasDirectives(['api'], operation.query) &&
+      !this.config.defaultEndpoint
+    ) {
       return forward?.(operation) ?? null
     }
 
@@ -50,6 +53,8 @@ export class MultiAPILink extends ApolloLink {
 
       if (contextKey) {
         apiName = operation.getContext()[contextKey]
+      } else if (!!this.config.defaultEndpoint) {
+        apiName = this.config.defaultEndpoint
       }
     }
 

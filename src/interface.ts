@@ -1,15 +1,17 @@
 import { ApolloLink } from '@apollo/client/core'
 
-export interface MultiAPILinkConfig<T extends string = string> {
+export type DefaultEndpoints = Record<string, string>
+
+export interface MultiAPILinkConfig<Endpoints extends DefaultEndpoints> {
   /**
    * Dictionary of your endpoints.
    * Keys will be used as name identifier in the `@api` directive
    */
-  endpoints: Record<T, string>
+  endpoints: DefaultEndpoints
   /**
    * Optional default endpoint to fallback to if no `@api` directive is explicitly provided
    */
-  defaultEndpoint?: T
+  defaultEndpoint?: Extract<keyof Endpoints, string>
   /**
    * Init http apollo link
    */

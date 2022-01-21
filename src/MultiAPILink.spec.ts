@@ -50,18 +50,17 @@ describe('MultiAPILink', () => {
       return Promise.resolve(JSON.stringify({ data }))
     })
   })
+  const link = new MultiAPILink({
+    endpoints: Object.fromEntries(
+      Object.keys(ENDPOINTS_CONFIG).map((endpointKey) => [
+        endpointKey,
+        ORIGIN + ENDPOINTS_CONFIG[endpointKey].path,
+      ])
+    ),
+    defaultEndpoint: 'b',
+    createHttpLink: () => createHttpLink(),
+  })
   it('should redirect request to right endpoint', async () => {
-    const link = new MultiAPILink({
-      endpoints: Object.fromEntries(
-        Object.keys(ENDPOINTS_CONFIG).map((endpointKey) => [
-          endpointKey,
-          ORIGIN + ENDPOINTS_CONFIG[endpointKey].path,
-        ])
-      ),
-      defaultEndpoint: 'b',
-      createHttpLink: () => createHttpLink(),
-    })
-
     const queryAResponse = await toPromise(
       execute(link, {
         query: queryA,
@@ -72,14 +71,18 @@ describe('MultiAPILink', () => {
         query: queryB,
       })
     )
+
+    expect(queryAResponse.data).toEqual(ENDPOINTS_CONFIG.a.response)
+    expect(queryBResponse.data).toEqual(ENDPOINTS_CONFIG.b.response)
+  })
+
+  it('should redirect request to default endpoint if none is passed explicitely', async () => {
     const queryCResponse = await toPromise(
       execute(link, {
         query: queryC,
       })
     )
 
-    expect(queryAResponse.data).toEqual(ENDPOINTS_CONFIG.a.response)
-    expect(queryBResponse.data).toEqual(ENDPOINTS_CONFIG.b.response)
     expect(queryCResponse.data).toEqual(ENDPOINTS_CONFIG.b.response)
   })
 })

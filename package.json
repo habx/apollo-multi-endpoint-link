@@ -49,6 +49,7 @@
     "@habx/eslint-config-client": "^6.6.0",
     "@types/jest": "^27.4.0",
     "bili": "^5.0.5",
+    "cz-conventional-changelog": "^3.3.0",
     "graphql": "^15.8.0",
     "husky": "^4.3.8",
     "jest": "^27.4.7",
@@ -61,5 +62,10 @@
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }

@@ -65,8 +65,8 @@ new MultiAPILink(config, request);
 #### Query with static api name :
 
 ```graphql
-query projectList @api(name: projects) {
-  projects {
+query projectList($params: Params) @api(name: projects) {
+  projects(params: $params) {
     nodes {
       id
       name
@@ -82,8 +82,8 @@ const response = useQuery(myQuery);
 #### Query with dynamic api name
 
 ```graphql
-query projectList @api(contextKey: "apiName") {
-  projects {
+query projectList($params: Params) @api(contextKey: "apiName") {
+  projects(params: $params) {
     nodes {
       id
       name

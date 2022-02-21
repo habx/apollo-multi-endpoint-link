@@ -11,14 +11,14 @@
   "masterIssue": true,
   "rangeStrategy": "bump",
   "separateMinorPatch": true,
-  "prConcurrentLimit": 5,
+  "prConcurrentLimit": 10,
   "prHourlyLimit": 10,
   "enabledManagers": [
     "npm"
   ],
   "timezone": "Europe/Paris",
   "schedule": [
-    "after 10pm and before 7:00am"
+    "before 6:00am on Monday"
   ],
   "vulnerabilityAlerts": {
     "labels": [

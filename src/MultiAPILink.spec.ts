@@ -1,4 +1,11 @@
-import { createHttpLink, execute, gql, toPromise } from '@apollo/client/core'
+import {
+  ApolloLink,
+  createHttpLink,
+  execute,
+  gql,
+  toPromise,
+} from '@apollo/client/core'
+import { RestLink } from 'apollo-link-rest'
 import fetchMock from 'jest-fetch-mock'
 
 import { MultiAPILink } from './MultiAPILink'
@@ -36,6 +43,14 @@ const queryB = gql`
 const queryC = gql`
   query {
     queryToC {
+      data
+    }
+  }
+`
+
+const queryD = gql`
+  query {
+    queryToD @rest(method: "GET", endpoint: d, path: "/") {
       data
     }
   }
@@ -95,5 +110,64 @@ describe('MultiAPILink', () => {
     )
 
     expect(queryCResponse.data).toEqual(ENDPOINTS_CONFIG.b.response)
+  })
+
+  it('should ignore MultiAPILink if there is a REST directive', async () => {
+    const httpLink = createHttpLink()
+    const httpLinkSpy = jest.spyOn(httpLink, 'request')
+    const link = ApolloLink.from([
+      new MultiAPILink({
+        endpoints: Object.fromEntries(
+          Object.keys(ENDPOINTS_CONFIG).map((endpointKey) => [
+            endpointKey,
+            ORIGIN + ENDPOINTS_CONFIG[endpointKey].path,
+          ])
+        ),
+        createHttpLink: () => httpLink,
+      }),
+      new RestLink({
+        endpoints: {
+          d: 'test',
+        },
+      }),
+    ])
+
+    await toPromise(
+      execute(link, {
+        query: queryD,
+      })
+    )
+
+    expect(httpLinkSpy).not.toBeCalled()
+  })
+
+  it('should ignore default endpoint if there is a REST directive', async () => {
+    const httpLink = createHttpLink()
+    const httpLinkSpy = jest.spyOn(httpLink, 'request')
+    const link = ApolloLink.from([
+      new MultiAPILink({
+        endpoints: Object.fromEntries(
+          Object.keys(ENDPOINTS_CONFIG).map((endpointKey) => [
+            endpointKey,
+            ORIGIN + ENDPOINTS_CONFIG[endpointKey].path,
+          ])
+        ),
+        defaultEndpoint: 'b',
+        createHttpLink: () => httpLink,
+      }),
+      new RestLink({
+        endpoints: {
+          d: 'test',
+        },
+      }),
+    ])
+
+    await toPromise(
+      execute(link, {
+        query: queryD,
+      })
+    )
+
+    expect(httpLinkSpy).not.toBeCalled()
   })
 })

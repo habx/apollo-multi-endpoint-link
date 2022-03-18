@@ -36,7 +36,7 @@ export class MultiAPILink<
     if (
       (!hasDirectives(['api'], operation.query) &&
         !this.config.defaultEndpoint) ||
-      (this.config.defaultEndpoint && hasDirectives(['rest'], operation.query))
+      hasDirectives(['rest'], operation.query)
     ) {
       return forward?.(operation) ?? null
     }

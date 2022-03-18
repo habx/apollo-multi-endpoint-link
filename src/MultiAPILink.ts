@@ -34,8 +34,9 @@ export class MultiAPILink<
 
   public request(operation: Operation, forward?: NextLink) {
     if (
-      !hasDirectives(['api'], operation.query) &&
-      !this.config.defaultEndpoint
+      (!hasDirectives(['api'], operation.query) &&
+        !this.config.defaultEndpoint) ||
+      (this.config.defaultEndpoint && hasDirectives(['rest'], operation.query))
     ) {
       return forward?.(operation) ?? null
     }

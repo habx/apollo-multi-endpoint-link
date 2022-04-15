@@ -1,4 +1,4 @@
 # https://github.com/habx/devops-repo-shared-configs/blob/dev/github-settings/ts-lib-client-public.yml
 # 2022-03-17
-# last_update: 2022-04-09
+# last_update: 2022-04-10
 _extends: devops-repo-shared-configs:github-settings/ts-lib-client-public.yml

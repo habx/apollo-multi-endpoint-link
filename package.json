@@ -47,7 +47,7 @@
     "@apollo/client": "^3.6.2",
     "@habx/config-ci-front": "^2.3.0",
     "@habx/eslint-config-client": "^6.7.0",
-    "@types/jest": "^27.4.1",
+    "@types/jest": "^27.5.0",
     "apollo-link-rest": "*",
     "bili": "^5.0.5",
     "cz-conventional-changelog": "^3.3.0",

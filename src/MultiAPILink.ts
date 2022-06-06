@@ -93,6 +93,9 @@ export class MultiAPILink<
       definition.kind === 'OperationDefinition' &&
       definition.operation === 'subscription'
     ) {
+      if(typeof window === 'undefined'){
+        return false;
+      }
       if (!this.config.createWsLink) {
         throw new Error(
           `You tried to call a subscription without configuring "createWsLink" function:${operation.query}`

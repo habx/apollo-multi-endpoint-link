@@ -9,12 +9,14 @@
   "scripts": {
     "clean": "rimraf ./dist",
     "build": "npm run clean && npm run build:esm && npm run build:cjs",
+    "build-ci": "npm run clean && npm run build:esm && npm run build:cjs",
     "build:esm": "tsc",
     "build:cjs": "bili",
     "build:watch": "npm run clean && tsc --watch",
     "generate:snapshots": "node ./scripts/generateSnapshot.js",
     "lint": "eslint \"src/**\"",
     "test": "jest",
+    "test-ci": "jest",
     "test:coverage": "jest --coverage"
   },
   "files": [

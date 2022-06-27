@@ -1,167 +1,54 @@
 version: 2.1
 
 # --- Anchor alias ---- #
-# - Docker configuration - #
 alias:
-  - &node_executor
-    executor:
-      name: node/default
-      # See https://circleci.com/developer/orbs/orb/circleci/node for available tags.
-      tag: "16.8.0"
-# - Jobs filters - #
-  - &filters_allow_tags
+  # ---- Jobs filters ---- #
+  - &filters_only_dev
+    branches:
+      only: dev
     tags:
-      only: /^v.*/
-  - &filters_ignore_branches
+      ignore: /.*/
+  - &filters_only_branch
+    branches:
+      ignore:
+        - dev
+    tags:
+      ignore: /.*/
+  - &filters_only_tags
     branches:
       ignore: /.*/
-  - &filters_ignore_tags
     tags:
-      ignore: /.*/
-# - Step - #
-  - &preconfig-github-pkg
-    run:
-      name: Preconfigure environment ~/.npmrc
-      command: |
-        echo "@habx:registry=https://npm.pkg.github.com/" > ~/.npmrc
-        echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> ~/.npmrc
-  - &preconfig-npmjs
-    run:
-      name: Preconfigure environment ~/.npmrc
-      command: |
-        echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
-# - Node modules - #
-  - &install_npm
-    node/install-npm:
-      version: "7.6.0"
-  - &install_dependencies
-    node/install-packages:
-      cache-version: "{{ .Environment.CACHE_VERSION }}"
-      include-branch-in-cache-key: false
-      override-ci-command: npm ci --no-audit
-
-  - &instalGhPagesDep
-    run:
-      name: Install and configure dependencies
-      command: |
-        sudo npm install -g gh-pages
-        git config --global user.email "tech@habx.fr"
-        git config --global user.name "circleci"
-jobs:
-  build:
-    <<: *node_executor
-    steps:
-      - checkout
-      - *install_npm
-      - *install_dependencies
-      - run: export NODE_ENV=production; npm run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - dist
-
-  storybook-build:
-    <<: *node_executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project
-      - *install_npm
-      - *install_dependencies
-      - run: npm run storybook:build
-
-  lint:
-    <<: *node_executor
-    steps:
-      - checkout
-      - *install_npm
-      - *install_dependencies
-      - run: npm run lint
-
-  tests:
-    <<: *node_executor
-    steps:
-      - checkout
-      - *install_npm
-      - *install_dependencies
-      - run: npm run test
-
-  github-pkg-publish:
-    <<: *node_executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project
-      - *preconfig-github-pkg
-      - *install_npm
-      - *install_dependencies
-      - run: rm .npmrc || echo ".npmrc not found"
-      - run: npm publish
-
-  npmjs-publish:
-    <<: *node_executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project
-      - *preconfig-npmjs
-      - *install_npm
-      - *install_dependencies
-      - run: jq -M 'del(.publishConfig)' package.json > _package.json; mv _package.json package.json
-      - run: npm publish
-
-  storybook-publish:
-    <<: *node_executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project
-      - *install_npm
-      - *install_dependencies
-      - run: npm run storybook:deploy
-
-  tsdoc-publish:
-    <<: *node_executor
-    steps:
-      - checkout
-      - attach_workspace:
-          at: ~/project
-      - *preconfig-npmjs
-      - *install_npm
-      - *install_dependencies
-      - *instalGhPagesDep
-      - run:
-          name: Deploy docs to gh-pages branch
-          command: npm run build:documentation && gh-pages --dist docs --repo https://${GITHUB_TOKEN}@github.com/${CIRCLE_REPOSITORY_URL#"git@github.com:"} --silent --message "[SKIP CI] CircleCI build ${CIRCLE_BUILD_NUM} pushed to Github Pages"
+      only: /^v.*/
 
 orbs:
-  node: circleci/node@4.9.0
-# --- END --- #
-# --------------------------------------------------- #
-# -------------- DEFINE YOUR WORKFLOW --------------- #
-# --------------------------------------------------- #
+  # docs: https://circleci.com/developer/orbs/orb/habx/node
+  node: habx/node@0.12.0
+
 workflows:
-  build:
+  tests:
     jobs:
-      - build:
+      - node/build:
           filters:
-            <<: *filters_allow_tags
-      - lint:
+            <<: *filters_only_branch
+      - node/lint:
           filters:
-            <<: *filters_allow_tags
-      - npmjs-publish:
-          context: ts-lib-client-public
+            <<: *filters_only_branch
           requires:
-            - build
-            - lint
+            - node/build
+  dev:
+    jobs:
+      - node/build:
           filters:
-            <<: *filters_allow_tags
-            <<: *filters_ignore_branches
-      - github-pkg-publish:
+            <<: *filters_only_dev
+  release:
+    jobs:
+      # Release to github packages
+      - node/npm-publish:
           context: ts-lib-client-public
-          requires:
-            - build
-            - lint
           filters:
-            <<: *filters_allow_tags
-            <<: *filters_ignore_branches
+            <<: *filters_only_tags
+      # Release to npmjs registry
+      - node/npmjs-public-publish:
+          context: ts-lib-client-public
+          filters:
+            <<: *filters_only_tags

@@ -22,7 +22,7 @@ alias:
 
 orbs:
   # docs: https://circleci.com/developer/orbs/orb/habx/node
-  node: habx/node@0.12.0
+  node: habx/node@0.12.1
 
 workflows:
   tests:

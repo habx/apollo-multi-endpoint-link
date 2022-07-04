@@ -42,13 +42,20 @@ workflows:
             <<: *filters_only_dev
   release:
     jobs:
+      - node/build:
+          filters:
+            <<: *filters_only_tags
       # Release to github packages
       - node/npm-publish:
           context: ts-lib-client-public
+          requires:
+            - node/build
           filters:
             <<: *filters_only_tags
       # Release to npmjs registry
       - node/npmjs-public-publish:
           context: ts-lib-client-public
+          requires:
+            - node/build
           filters:
             <<: *filters_only_tags

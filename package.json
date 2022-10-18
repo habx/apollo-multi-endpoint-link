@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "@apollo/client": "^3.7.0",
-    "@habx/config-ci-front": "^3.6.0",
+    "@habx/config-ci-front": "^3.7.0",
     "@habx/eslint-config-client": "^6.9.2",
     "@types/jest": "^29.1.2",
     "apollo-link-rest": "*",

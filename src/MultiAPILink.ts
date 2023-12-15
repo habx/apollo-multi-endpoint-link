@@ -35,17 +35,22 @@ export class MultiAPILink<
   public request(operation: Operation, forward?: NextLink) {
     if (
       (!hasDirectives(['api'], operation.query) &&
-        !this.config.defaultEndpoint) ||
+        !this.config.defaultEndpoint &&
+        !operation.getContext().multiApiLinkApiName) ||
       hasDirectives(['rest'], operation.query)
     ) {
       return forward?.(operation) ?? null
     }
 
-    let apiName: string = getDirectiveArgumentValueFromOperation(
-      operation,
-      'api',
-      'name'
-    )
+    let apiName: string = operation.getContext().multiApiLinkApiName
+
+    if (!apiName) {
+      apiName = getDirectiveArgumentValueFromOperation(
+        operation,
+        'api',
+        'name'
+      )
+    }
 
     if (!apiName) {
       const contextKey = getDirectiveArgumentValueFromOperation(
@@ -87,6 +92,11 @@ export class MultiAPILink<
     } else if (process.env.NODE_ENV === 'dev') {
       throw new Error(`${apiName} is not defined in endpoints definitions`)
     }
+
+    // Store apiName in context to support operation retries.
+    operation.setContext({
+      multiApiLinkApiName: apiName,
+    })
 
     const definition = getMainDefinition(operation.query)
     if (

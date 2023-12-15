@@ -9,6 +9,7 @@ import { RestLink } from 'apollo-link-rest'
 import fetchMock from 'jest-fetch-mock'
 
 import { MultiAPILink } from './MultiAPILink'
+import { RetryLink } from "@apollo/client/link/retry";
 
 fetchMock.enableMocks()
 
@@ -169,5 +170,49 @@ describe('MultiAPILink', () => {
     )
 
     expect(httpLinkSpy).not.toBeCalled()
+  })
+
+  describe('with retry link', () => {
+    beforeEach(() => {
+      fetchMock.resetMocks()
+
+      fetchMock.mockRejectOnce(new Error('Network error'))
+
+      fetchMock.mockResponse((req) => {
+        const data = Object.values(ENDPOINTS_CONFIG).find((config) =>
+          req.url.endsWith(`${config.path}/graphql`)
+        )?.response
+        return Promise.resolve(JSON.stringify({data}))
+      })
+    })
+
+    it('should retry the operation with the correct endpoint', async () => {
+      const retryLink = new RetryLink({
+        attempts: {
+          max: 2,
+        },
+      });
+      const link = ApolloLink.from([
+        retryLink,
+        new MultiAPILink({
+          endpoints: Object.fromEntries(
+            Object.keys(ENDPOINTS_CONFIG).map((endpointKey) => [
+              endpointKey,
+              ORIGIN + ENDPOINTS_CONFIG[endpointKey].path,
+            ])
+          ),
+          defaultEndpoint: 'b',
+          createHttpLink: () => createHttpLink(),
+        })
+      ])
+
+      const queryAResponse = await toPromise(
+        execute(link, {
+          query: queryA,
+        })
+      )
+
+      expect(queryAResponse.data).toEqual(ENDPOINTS_CONFIG.a.response)
+    })
   })
 })
